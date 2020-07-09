@@ -1,0 +1,176 @@
+html, body {
+  font-family: sans-serif;
+}
+
+body {
+  margin: 20px;
+  background-color: #e4e4e4;
+}
+
+.keyboard-wrapper {
+  margin-top: 10vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.keyboard-wrapper h2 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+.input-keyboard {
+  padding-left: 10px;
+  margin-top: 9vh;
+  width: calc(240px + 15vw);
+  min-width: 300px;
+  min-height: 40px;
+  font-size: 1.3rem;
+  border-radius: 8px;
+  border: 1px solid #a3a3a3;
+  outline: none;
+}
+
+.input-keyboard:focus {
+  border-color: #7619df;
+  outline: none;
+}
+
+.keyboard {
+  margin-top: 4vh;
+  padding: 16px;
+  border: 2px solid black;
+}
+
+.keyboard__keys-line {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.keyboard__keys-line ~ .keyboard__keys-line {
+  margin-top: 6px;
+}
+
+.keyboard__keys-line span::before {
+  display: inline-block;
+}
+
+.keyboard__key {
+  height: 40px;
+  width: 40px;
+  padding: 0 2px;
+  line-height: 40px;
+  border: 1px solid black;
+  border-radius: 2px;
+  font-size: 1.1rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.keyboard__key ~ .keyboard__key {
+  margin-left: 6px;
+}
+
+.backspace-key {
+  width: auto;
+  padding: 0 4px;
+  font-size: 0.8rem;
+}
+
+.backspace-key span:before {
+  padding-right: 1px;
+  font-size: 10px;
+}
+
+.tab-key, .r-slash-key {
+  width: 59px;
+}
+
+.tab-key {
+  font-size: 0.8rem;
+}
+
+.tab-key span:before {
+  -webkit-transform: translateX(2px);
+          transform: translateX(2px);
+  font-size: 12px;
+}
+
+.caps-key {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 76px;
+  height: 42px;
+  padding: 8px;
+  line-height: 13px;
+  font-size: 0.8rem;
+}
+
+.f-key, .j-key {
+  position: relative;
+}
+
+.f-key::after, .j-key::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 35px;
+  left: 19px;
+  width: 9px;
+  height: 2px;
+  background: #000;
+}
+
+.enter-key {
+  width: 100px;
+  font-size: 0.8rem;
+}
+
+.enter-key span:before {
+  -webkit-transform: translate(-1px, 4px);
+          transform: translate(-1px, 4px);
+  font-size: 16px;
+}
+
+.l-shift-key, .r-shift-key {
+  font-size: 0.8rem;
+}
+
+.l-shift-key span:before, .r-shift-key span:before {
+  -webkit-transform: translate(0, 1px);
+          transform: translate(0, 1px);
+  font-size: 17px;
+}
+
+.l-shift-key {
+  width: 86px;
+}
+
+.r-shift-key {
+  width: 136px;
+}
+
+.special-keys-row .keyboard__key {
+  font-size: 0.8rem;
+  width: 53px;
+}
+
+.space-key {
+  width: 299px !important;
+}
+
+.led-key {
+  font-size: 0.75rem !important;
+}
