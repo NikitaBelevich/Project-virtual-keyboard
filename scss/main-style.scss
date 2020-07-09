@@ -147,6 +147,17 @@ $fontSizeSpecialKeys: 0.8rem;
 //  Space
 .space-key {
     width: 299px !important;
+    position: relative;
+    &::after{
+        content: "";
+        position: absolute;
+        left: 120px;
+        top: 20px;
+        display: block;
+        width: 70px;
+        height: 2px;
+        background: #000;
+    }
 }
 // LED
 .led-key {
