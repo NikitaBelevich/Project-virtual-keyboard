@@ -51,12 +51,16 @@ body {
   margin-top: 4vh;
   padding: 16px;
   border: 2px solid black;
+  border-radius: 7px;
 }
 
 .keyboard__keys-line {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .keyboard__keys-line ~ .keyboard__keys-line {
@@ -73,7 +77,7 @@ body {
   padding: 0 2px;
   line-height: 40px;
   border: 1px solid black;
-  border-radius: 2px;
+  border-radius: 3px;
   font-size: 1.1rem;
   text-align: center;
   cursor: pointer;
@@ -185,4 +189,80 @@ body {
 
 .led-key {
   font-size: 0.75rem !important;
+}
+
+.style-pink {
+  background-color: #ebbede;
+  border-color: #c251d1;
+}
+
+.style-pink .keyboard__key {
+  border: none;
+  background-color: #fff3fb;
+  -webkit-box-shadow: 0px 0px 2px #000000a3;
+          box-shadow: 0px 0px 2px #000000a3;
+}
+
+.style-dark {
+  background-color: #303030;
+}
+
+.style-dark .keyboard__key {
+  color: #eaeaea;
+  border: none;
+  -webkit-box-shadow: 0px 0px 2px #dcdcdc;
+          box-shadow: 0px 0px 2px #dcdcdc;
+}
+
+.style-dark .f-key::after, .style-dark .j-key::after {
+  background: #eaeaea;
+}
+
+.style-dark .space-key::after {
+  background: #eaeaea;
+}
+
+.style-light {
+  background-color: #f7f7f7;
+}
+
+.style-light .keyboard__key {
+  border: none;
+  -webkit-box-shadow: 0px 0px 2px #252525;
+          box-shadow: 0px 0px 2px #252525;
+}
+
+.keyboard-style-button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 20px;
+}
+
+.keyboard-style-button .check-block {
+  width: 20px;
+  height: 20px;
+  margin-left: 2vh;
+  cursor: pointer;
+  border: 1px solid #9c9c9c;
+  border-radius: 5px;
+  -webkit-transition: .15s ease-out;
+  transition: .15s ease-out;
+}
+
+.keyboard-style-button .check-block:hover {
+  -webkit-box-shadow: 0 0 3px #252525;
+          box-shadow: 0 0 3px #252525;
+}
+
+.keyboard-style-button .check-block:first-child {
+  background-color: #ebbede;
+}
+
+.keyboard-style-button .check-block:nth-child(2) {
+  background-color: #303030;
+}
+
+.keyboard-style-button .check-block:last-child {
+  background-color: #f7f7f7;
 }
