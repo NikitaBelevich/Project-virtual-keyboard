@@ -3,6 +3,7 @@
 // Коллекция кодов спец клавиш, которые не должны никак визуально меняться при нажатии CapsLock или Shift
 const specialKeys = new Set(['Tab', 'CapsLock', 'ShiftLeft', 'ControlLeft', 'MetaLeft', 'AltLeft', 'Space', 'AltRight', 'Fn', 'LED', 'ControlRight', 'ShiftRight', 'Enter', 'Backspace']);
 
+// Символы нижнего регистра
 const lowerCaseSymbols = {
     'row-1': ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
     'row-2': ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
@@ -11,6 +12,7 @@ const lowerCaseSymbols = {
     'row-5': ['Ctrl', 'Meta', 'Alt', 'Space', 'Alt', 'Fn', 'LED', 'Ctrl'],
 };
 
+// Символы верхнего регистра
 const upperCaseSymbols = {
     'row-1': ["~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", 'Backspace'],
     'row-2': ['Tab',"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}", "|"],
@@ -18,7 +20,6 @@ const upperCaseSymbols = {
     'row-4': ['Shift', "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", 'Shift'],
     'row-5': ['Ctrl', 'Meta', 'Alt', 'Space', 'Alt', 'Fn', 'LED', 'Ctrl'],
 };
-
 
 const keyboard = document.querySelector('.keyboard');
 const keyboardRows = Array.from(keyboard.children);
@@ -83,7 +84,7 @@ document.addEventListener('keydown', (event) => {
 
     //* Если наша нажатая клавиша не является специальной (из коллекции), тогда мы выводим в поле вывода textContent этой клавиши
     //* Т.е отменили вывод символов по умолчанию и выводим нарисованный символ на виртуальной клавише
-    //* Здесь другая локика работы клавиатуры, активированный CapsLock работает как зажатый Shift, поэтому мы должны отменить дефолтный вывод и выводить свои символы
+    //* Здесь другая логика работы клавиатуры, активированный CapsLock работает как зажатый Shift, поэтому мы должны отменить дефолтный вывод и выводить свои символы
     if (!specialKeys.has(keyCodeAttribute)) {
         event.preventDefault();
         inputField.focus(); // ещё раз ставим фокус на поле, на всякий случай, т.к символы воодятся независимо от фокуса
