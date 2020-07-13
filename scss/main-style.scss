@@ -23,14 +23,14 @@ $fontSizeSpecialKeys: 0.8rem;
     }
 }
 
-.input-keyboard {
-    padding-left: 10px;
+.textarea-keyboard {
+    padding: 8px;
     margin-top: 9vh;
     width: calc(240px + 15vw);
-    min-width: 300px;
-    min-height: 40px;
+    min-width: 260px;
+    min-height: 80px;
     font-size: 1.3rem;
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid #a3a3a3;
     outline: none;
 

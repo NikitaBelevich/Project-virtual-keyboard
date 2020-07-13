@@ -26,7 +26,7 @@ const keyboardRows = Array.from(keyboard.children);
 const allKeys = keyboard.querySelectorAll('.keyboard__key');
 const capsLock = keyboard.querySelector('.caps-key');
 
-const inputField = document.querySelector('.input-keyboard');
+const inputField = document.querySelector('.textarea-keyboard');
 inputField.focus(); // ставим сразу фокус на поле
 
 addCodeAttribute();
