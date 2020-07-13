@@ -25,6 +25,7 @@ const keyboardStyleClasses = {
     'style-light': 'key-active-light',
     'style-dark': 'key-active-dark',
     'style-pink': 'key-active-pink',
+    'style-turquoise': 'key-active-turquoise',
 
 };
 

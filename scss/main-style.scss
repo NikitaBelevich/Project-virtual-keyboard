@@ -177,6 +177,16 @@ $fontSizeSpecialKeys: 0.8rem;
     }
 }
 
+.style-turquoise {
+    background-color: #84efe7;
+    border-color: #3ba9a1;
+    .keyboard__key {
+        border: none;
+        background-color: #dffffd;
+        box-shadow: 0px 0px 2px #000000a3;
+    }
+}
+
 .style-dark {
     background-color: #303030;
     .keyboard__key {
@@ -223,6 +233,9 @@ $fontSizeSpecialKeys: 0.8rem;
             background-color: #ebbede;
         }
         &:nth-child(2) {
+            background-color: #84efe7;
+        }
+        &:nth-child(3) {
             background-color: #303030;
         }
         &:last-child {
@@ -240,6 +253,9 @@ $fontSizeSpecialKeys: 0.8rem;
 }
 .key-active-pink {
     background-color: #ff95dc !important;
+}
+.key-active-turquoise {
+    background-color: #55f5eb !important;
 }
 
 // Стили клавиатуры и активных клавиш -----------------------------------------
