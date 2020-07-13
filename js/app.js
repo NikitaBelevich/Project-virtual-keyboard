@@ -24,7 +24,9 @@ const keyboard = document.querySelector('.keyboard');
 const keyboardRows = Array.from(keyboard.children);
 const allKeys = keyboard.querySelectorAll('.keyboard__key');
 const capsLock = keyboard.querySelector('.caps-key');
+
 const inputField = document.querySelector('.input-keyboard');
+inputField.focus(); // ставим сразу фокус на поле
 
 addCodeAttribute();
 // Функция добавляет всем клавишам клавиатуры атрибут с соответствующим ей физическим кодом
@@ -84,7 +86,7 @@ document.addEventListener('keydown', (event) => {
     //* Здесь другая локика работы клавиатуры, активированный CapsLock работает как зажатый Shift, поэтому мы должны отменить дефолтный вывод и выводить свои символы
     if (!specialKeys.has(keyCodeAttribute)) {
         event.preventDefault();
-        console.warn(event.key);
+        inputField.focus(); // ещё раз ставим фокус на поле, на всякий случай, т.к символы воодятся независимо от фокуса
         inputField.value += currentKeyDown.textContent;
     }
     
