@@ -21,6 +21,13 @@ const upperCaseSymbols = {
     'row-5': ['Ctrl', 'Meta', 'Alt', 'Space', 'Alt', 'Fn', 'LED', 'Ctrl'],
 };
 
+const keyboardStyleClasses = {
+    'style-light': 'key-active-light',
+    'style-dark': 'key-active-dark',
+    'style-pink': 'key-active-pink',
+
+};
+
 const keyboard = document.querySelector('.keyboard');
 const keyboardRows = Array.from(keyboard.children);
 const allKeys = keyboard.querySelectorAll('.keyboard__key');
@@ -56,11 +63,17 @@ function addCodeAttribute() {
     }
 }
 
+
+
 document.addEventListener('keydown', (event) => {
     // Получили текущую нажатую клавишу из DOM 
     const currentKeyDown = document.querySelector(`.keyboard .keyboard__key[data-keyCode="${event.code}"]`);
     const keyCodeAttribute = currentKeyDown.dataset.keycode;
-    const containActiveClassCapsLock = capsLock.classList.contains('key-active');
+    const currentStyleKeyboard = keyboard.classList[1];
+
+    const targetStyleActiveKey = keyboardStyleClasses[currentStyleKeyboard];
+    console.log(targetStyleActiveKey);
+    const containActiveClassCapsLock = capsLock.classList.contains(targetStyleActiveKey);
 
     if (event.code == 'Tab') event.preventDefault();
 
@@ -76,11 +89,11 @@ document.addEventListener('keydown', (event) => {
             fillKeyboardNewSymbol(lowerCaseSymbols);
         }
         
-        currentKeyDown.classList.toggle('key-active');
+        currentKeyDown.classList.toggle(targetStyleActiveKey);
         return;
     }
     // Если у нас не CapsLock, тогда мы добавляем активность на нажатую клавишу
-    addActiveClass(event, currentKeyDown);
+    currentKeyDown.classList.add(targetStyleActiveKey);
 
     //* Если наша нажатая клавиша не является специальной (из коллекции), тогда мы выводим в поле вывода textContent этой клавиши
     //* Т.е отменили вывод символов по умолчанию и выводим нарисованный символ на виртуальной клавише
@@ -101,11 +114,11 @@ document.addEventListener('keydown', (event) => {
         const currentKeyUp = document.querySelector(`.keyboard .keyboard__key[data-keyCode="${event.code}"]`);
         // Если отпущена любая клавиша кроме пробела, то удаляем активность, а пробел остаётся активным до следующего нажатия
         if (!checkCapsLock(event)) {
-            currentKeyUp.classList.remove('key-active');
+            currentKeyUp.classList.remove(targetStyleActiveKey);
         }
         // Если у CapsLock имелся класс активности и при этом была отпущена клавиша Shift, тогда мы удаляем с капса класс активности
         if (containActiveClassCapsLock && checkShift(event)) {
-            capsLock.classList.remove('key-active');
+            capsLock.classList.remove(targetStyleActiveKey);
         }
         // Когда отпускаем Shift, тогда мы возвращаем клавиши клавиатуры в нижний регистр
         if (checkShift(event)) {
@@ -114,9 +127,6 @@ document.addEventListener('keydown', (event) => {
     });
 });
 
-function addActiveClass(event, currentKey) {
-    currentKey.classList.add('key-active');
-}
 
 function checkCapsLock(event) {
     return (event.code == 'CapsLock') ? true : false;
@@ -145,3 +155,29 @@ function fillKeyboardNewSymbol(objKeySymbols) {
         rowKyesIndex++;
     }
 }
+
+// TODO Изменение стиля клавиатуры -------------------------------------------
+changingTheKeyboardStyle();
+function changingTheKeyboardStyle() {
+    const styleButtonsContainer = document.querySelector('.keyboard-style-button');
+    styleButtonsContainer.addEventListener('click', (event) => {
+        const targetButton = event.target.closest('.check-block');
+        if (!targetButton) return;
+        const targetStyle = targetButton.dataset.styleKeyboard;
+
+        const currentStyleKeyboard = keyboard.classList[1];
+        // Сбрасываем все клавиши в нижний регистр
+        fillKeyboardNewSymbol(lowerCaseSymbols);
+        // И проверяем, если класс активности у CapsLock есть, значит удаляем его
+        // Т.е мы переключаем новый стиль клавиатуры, сбрасываем капс и всё как с чистого листа
+        if (capsLock.classList[2]) {
+            capsLock.classList.remove(keyboardStyleClasses[currentStyleKeyboard]);
+        }
+
+        // Удалили текущий класс стиля
+        keyboard.classList.remove(currentStyleKeyboard);
+        // Добавили новый стиль
+        keyboard.classList.add(targetStyle);
+    });
+}
+// TODO Изменение стиля клавиатуры -------------------------------------------

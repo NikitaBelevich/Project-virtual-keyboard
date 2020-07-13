@@ -165,6 +165,8 @@ $fontSizeSpecialKeys: 0.8rem;
     font-size: 0.75rem !important;
 }
 
+
+// Стили клавиатуры и активных клавиш -----------------------------------------
 .style-pink {
     background-color: #ebbede;
     border-color: #c251d1;
@@ -230,6 +232,14 @@ $fontSizeSpecialKeys: 0.8rem;
     
 }
 
-.key-active {
-    background-color: #c4c4c4;
+.key-active-light {
+    background-color: #c4c4c4 !important;
 }
+.key-active-dark {
+    background-color: #595959 !important;
+}
+.key-active-pink {
+    background-color: #ff95dc !important;
+}
+
+// Стили клавиатуры и активных клавиш -----------------------------------------

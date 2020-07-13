@@ -33,7 +33,7 @@ body {
 .textarea-keyboard {
   padding: 8px;
   margin-top: 9vh;
-  width: calc(200px + 13vw);
+  width: calc(240px + 15vw);
   min-width: 260px;
   min-height: 80px;
   font-size: 1.3rem;
@@ -267,6 +267,14 @@ body {
   background-color: #f7f7f7;
 }
 
-.key-active {
-  background-color: #c4c4c4;
+.key-active-light {
+  background-color: #c4c4c4 !important;
+}
+
+.key-active-dark {
+  background-color: #595959 !important;
+}
+
+.key-active-pink {
+  background-color: #ff95dc !important;
 }
