@@ -23,6 +23,7 @@ const upperCaseSymbols = {
 const keyboard = document.querySelector('.keyboard');
 const keyboardRows = Array.from(keyboard.children);
 const allKeys = keyboard.querySelectorAll('.keyboard__key');
+const capsLock = keyboard.querySelector('.caps-key');
 const inputField = document.querySelector('.input-keyboard');
 
 addCodeAttribute();
@@ -56,6 +57,7 @@ document.addEventListener('keydown', (event) => {
     // Получили текущую нажатую клавишу из DOM 
     const currentKeyDown = document.querySelector(`.keyboard .keyboard__key[data-keyCode="${event.code}"]`);
     const keyCodeAttribute = currentKeyDown.dataset.keycode;
+    const containActiveClassCapsLock = capsLock.classList.contains('key-active');
 
     if (event.code == 'Tab') event.preventDefault();
 
@@ -63,7 +65,7 @@ document.addEventListener('keydown', (event) => {
     // При следующем нажатии на Caps, класс активности снимется и клавиша уже сама будет неактивна на аппаратном уровне
     if (checkCapsLock(event)) {
         // Здесь у нас currentKeyDown однозначно Space
-        const containActiveClassCapsLock = currentKeyDown.classList.contains('key-active');
+        
         if (!containActiveClassCapsLock) {
             fillKeyboardNewSymbol(upperCaseSymbols);
         }
@@ -86,6 +88,10 @@ document.addEventListener('keydown', (event) => {
         inputField.value += currentKeyDown.textContent;
     }
     
+    // Если был нажат какой-либо Shift, тогда мы меняем символы в другую раскладку
+    if (checkShift(event)) {
+        fillKeyboardNewSymbol(upperCaseSymbols);
+    }
 
     // И при отпускании последней нажатой клавиши мы удаляем с неё класс активности
     document.addEventListener('keyup', (event) => {
@@ -93,6 +99,14 @@ document.addEventListener('keydown', (event) => {
         // Если отпущена любая клавиша кроме пробела, то удаляем активность, а пробел остаётся активным до следующего нажатия
         if (!checkCapsLock(event)) {
             currentKeyUp.classList.remove('key-active');
+        }
+        // Если у CapsLock имелся класс активности и при этом была отпущена клавиша Shift, тогда мы удаляем с капса класс активности
+        if (containActiveClassCapsLock && checkShift(event)) {
+            capsLock.classList.remove('key-active');
+        }
+        // Когда отпускаем Shift, тогда мы возвращаем клавиши клавиатуры в нижний регистр
+        if (checkShift(event)) {
+            fillKeyboardNewSymbol(lowerCaseSymbols);
         }
     });
 });
@@ -105,6 +119,11 @@ function checkCapsLock(event) {
     return (event.code == 'CapsLock') ? true : false;
 }
 
+// Проверяет был ли нажат Shift при событии клавиатуры
+function checkShift(event) {
+    return (event.code == 'ShiftLeft' || event.code == 'ShiftRight') ? true : false;
+}
+
 function fillKeyboardNewSymbol(objKeySymbols) {
     
     let rowKyesIndex = 0; // индекс ряда в коллекции рядов-узлов клавиатуры
@@ -113,6 +132,7 @@ function fillKeyboardNewSymbol(objKeySymbols) {
             const currentKey = keyboardRows[rowKyesIndex].children[i];
             // Получили код текущей перебираемой клавиши из дата атрибута
             const keyCodeAttribute = currentKey.dataset.keycode;
+            // Если текущая перебираемая клавиша является специальной, тогда мы не выводим новый символ и переходим на следующий шаг
             if (specialKeys.has(keyCodeAttribute)) {
                 return;
             }
