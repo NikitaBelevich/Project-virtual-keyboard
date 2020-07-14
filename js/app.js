@@ -68,6 +68,8 @@ function addCodeAttribute() {
 document.addEventListener('keydown', (event) => {
     // Получили текущую нажатую клавишу из DOM 
     const currentKeyDown = document.querySelector(`.keyboard .keyboard__key[data-keyCode="${event.code}"]`);
+    if (currentKeyDown === null) return; // Если такой клавиши на клавиатуре нет, то просто выходим, сами клавиши которых нет на клавиатуре будут работать, например Num Pad
+
     const keyCodeAttribute = currentKeyDown.dataset.keycode;
     const currentStyleKeyboard = keyboard.classList[1];
 
@@ -80,7 +82,7 @@ document.addEventListener('keydown', (event) => {
     // При следующем нажатии на Caps, класс активности снимется и клавиша уже сама будет неактивна на аппаратном уровне
     if (checkCapsLock(event)) {
         // Здесь у нас currentKeyDown однозначно Space
-        
+
         // Если Caps не содержит класс активности, значит мы его только включаем, а значит переводим сиволы клавиатуры в верхний регистр
         if (!containActiveClassCapsLock) {
             fillKeyboardNewSymbol(upperCaseSymbols);
@@ -89,7 +91,7 @@ document.addEventListener('keydown', (event) => {
         if (containActiveClassCapsLock) {
             fillKeyboardNewSymbol(lowerCaseSymbols);
         }
-        
+
         currentKeyDown.classList.toggle(targetStyleActiveKey);
         return;
     }
@@ -107,7 +109,7 @@ document.addEventListener('keydown', (event) => {
             inputField.value += currentKeyDown.textContent;
         }
     }
-    
+
     // Если был нажат какой-либо Shift, тогда мы меняем символы в другую раскладку
     if (checkShift(event)) {
         fillKeyboardNewSymbol(upperCaseSymbols);
@@ -116,6 +118,8 @@ document.addEventListener('keydown', (event) => {
     // И при отпускании последней нажатой клавиши мы удаляем с неё класс активности
     document.addEventListener('keyup', (event) => {
         const currentKeyUp = document.querySelector(`.keyboard .keyboard__key[data-keyCode="${event.code}"]`);
+        if (currentKeyUp === null) return; // Если такой клавиши на клавиатуре нет, то просто выходим, сами клавиши которых нет на клавиатуре будут работать, например Num Pad
+
         // Если отпущена любая клавиша кроме пробела, то удаляем активность, а пробел остаётся активным до следующего нажатия
         if (!checkCapsLock(event)) {
             currentKeyUp.classList.remove(targetStyleActiveKey);
@@ -129,8 +133,8 @@ document.addEventListener('keydown', (event) => {
             fillKeyboardNewSymbol(lowerCaseSymbols);
         }
     });
-});
 
+});
 
 function checkCapsLock(event) {
     return (event.code == 'CapsLock') ? true : false;
