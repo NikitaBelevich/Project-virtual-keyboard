@@ -21,12 +21,12 @@ const upperCaseSymbols = {
     'row-5': ['Ctrl', 'Meta', 'Alt', 'Space', 'Alt', 'Fn', 'LED', 'Ctrl'],
 };
 
+// Стили клавиатуры и соотвветствующие стили активных клавиш
 const keyboardStyleClasses = {
     'style-light': 'key-active-light',
     'style-dark': 'key-active-dark',
     'style-pink': 'key-active-pink',
     'style-turquoise': 'key-active-turquoise',
-
 };
 
 const keyboard = document.querySelector('.keyboard');
@@ -65,7 +65,6 @@ function addCodeAttribute() {
 }
 
 
-
 document.addEventListener('keydown', (event) => {
     // Получили текущую нажатую клавишу из DOM 
     const currentKeyDown = document.querySelector(`.keyboard .keyboard__key[data-keyCode="${event.code}"]`);
@@ -73,7 +72,6 @@ document.addEventListener('keydown', (event) => {
     const currentStyleKeyboard = keyboard.classList[1];
 
     const targetStyleActiveKey = keyboardStyleClasses[currentStyleKeyboard];
-    console.log(targetStyleActiveKey);
     const containActiveClassCapsLock = capsLock.classList.contains(targetStyleActiveKey);
 
     if (event.code == 'Tab') event.preventDefault();
@@ -83,9 +81,11 @@ document.addEventListener('keydown', (event) => {
     if (checkCapsLock(event)) {
         // Здесь у нас currentKeyDown однозначно Space
         
+        // Если Caps не содержит класс активности, значит мы его только включаем, а значит переводим сиволы клавиатуры в верхний регистр
         if (!containActiveClassCapsLock) {
             fillKeyboardNewSymbol(upperCaseSymbols);
         }
+        // И наоборот, если имеется, значит мы желаем выключить Caps, и переводим регистр символов в нижний
         if (containActiveClassCapsLock) {
             fillKeyboardNewSymbol(lowerCaseSymbols);
         }
@@ -141,8 +141,8 @@ function checkShift(event) {
     return (event.code == 'ShiftLeft' || event.code == 'ShiftRight') ? true : false;
 }
 
+// Функция заполняет все символьные клавишами символами верхнего или нижнего регистра, в зависимости от того, какой объект передан в качестве аргумента
 function fillKeyboardNewSymbol(objKeySymbols) {
-    
     let rowKyesIndex = 0; // индекс ряда в коллекции рядов-узлов клавиатуры
     for (const codesRow in objKeySymbols) {
         objKeySymbols[codesRow].forEach((keySymbol, i) => {
