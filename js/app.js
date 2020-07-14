@@ -100,9 +100,12 @@ document.addEventListener('keydown', (event) => {
     //* Т.е отменили вывод символов по умолчанию и выводим нарисованный символ на виртуальной клавише
     //* Здесь другая логика работы клавиатуры, активированный CapsLock работает как зажатый Shift, поэтому мы должны отменить дефолтный вывод и выводить свои символы
     if (!specialKeys.has(keyCodeAttribute)) {
-        event.preventDefault();
-        inputField.focus(); // ещё раз ставим фокус на поле, на всякий случай, т.к символы воодятся независимо от фокуса
-        inputField.value += currentKeyDown.textContent;
+        // Только если Ctrl или comand не были зажаты мы отменяем действие по умолчанию, т.к нам нужна комбинация Ctrl + C чтобы копировать вставлять
+        if (!event.ctrlKey && !event.metaKey) {
+            event.preventDefault();
+            inputField.focus(); // ещё раз ставим фокус на поле, на всякий случай, т.к символы воодятся независимо от фокуса
+            inputField.value += currentKeyDown.textContent;
+        }
     }
     
     // Если был нажат какой-либо Shift, тогда мы меняем символы в другую раскладку
