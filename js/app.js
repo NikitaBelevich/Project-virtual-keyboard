@@ -12,12 +12,21 @@ const lowerCaseSymbols = {
     'row-5': ['Ctrl', 'Meta', 'Alt', 'Space', 'Alt', 'Fn', 'LED', 'Ctrl'],
 };
 
-// Символы верхнего регистра
-const upperCaseSymbols = {
-    'row-1': ["~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", 'Backspace'],
-    'row-2': ['Tab',"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}", "|"],
-    'row-3': ['CapsLock', "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"", 'Enter'],
-    'row-4': ['Shift', "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", 'Shift'],
+// Символы верхнего регистра для Caps Lock
+const upperCaseCapsSymbols = {
+    'row-1': ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
+    'row-2': ['Tab',"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", '[', ']', '\\'],
+    'row-3': ['CapsLock', "A", "S", "D", "F", "G", "H", "J", "K", "L", ';', '\'', 'Enter'],
+    'row-4': ['Shift', "Z", "X", "C", "V", "B", "N", "M", ',', '.', '/', 'Shift'],
+    'row-5': ['Ctrl', 'Meta', 'Alt', 'Space', 'Alt', 'Fn', 'LED', 'Ctrl'],
+};
+
+// Символы верхнего регистра для Shift
+const upperCaseShiftSymbols = {
+    'row-1': ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'Backspace'],
+    'row-2': ['Tab',"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", '{', '}', '|'],
+    'row-3': ['CapsLock', "A", "S", "D", "F", "G", "H", "J", "K", "L", ':', '"', 'Enter'],
+    'row-4': ['Shift', "Z", "X", "C", "V", "B", "N", "M", '<', '>', '?', 'Shift'],
     'row-5': ['Ctrl', 'Meta', 'Alt', 'Space', 'Alt', 'Fn', 'LED', 'Ctrl'],
 };
 
@@ -64,7 +73,6 @@ function addCodeAttribute() {
     }
 }
 
-
 document.addEventListener('keydown', (event) => {
     // Получили текущую нажатую клавишу из DOM 
     const currentKeyDown = document.querySelector(`.keyboard .keyboard__key[data-keyCode="${event.code}"]`);
@@ -78,6 +86,8 @@ document.addEventListener('keydown', (event) => {
 
     if (event.code == 'Tab') event.preventDefault();
 
+    inputField.focus(); // Когда начинаем ввод, делаем активным поле ввода
+
     // Если мы поймали CapsLock, то мы через toggle даём клавише активность
     // При следующем нажатии на Caps, класс активности снимется и клавиша уже сама будет неактивна на аппаратном уровне
     if (checkCapsLock(event)) {
@@ -85,7 +95,7 @@ document.addEventListener('keydown', (event) => {
 
         // Если Caps не содержит класс активности, значит мы его только включаем, а значит переводим сиволы клавиатуры в верхний регистр
         if (!containActiveClassCapsLock) {
-            fillKeyboardNewSymbol(upperCaseSymbols);
+            fillKeyboardNewSymbol(upperCaseCapsSymbols);
         }
         // И наоборот, если имеется, значит мы желаем выключить Caps, и переводим регистр символов в нижний
         if (containActiveClassCapsLock) {
@@ -98,39 +108,30 @@ document.addEventListener('keydown', (event) => {
     // Если у нас не CapsLock, тогда мы добавляем активность на нажатую клавишу
     currentKeyDown.classList.add(targetStyleActiveKey);
 
-    //* Если наша нажатая клавиша не является специальной (из коллекции), тогда мы выводим в поле вывода textContent этой клавиши
-    //* Т.е отменили вывод символов по умолчанию и выводим нарисованный символ на виртуальной клавише
-    //* Здесь другая логика работы клавиатуры, активированный CapsLock работает как зажатый Shift, поэтому мы должны отменить дефолтный вывод и выводить свои символы
-    if (!specialKeys.has(keyCodeAttribute)) {
-        // Только если Ctrl или comand не были зажаты мы отменяем действие по умолчанию, т.к нам нужна комбинация Ctrl + C чтобы копировать вставлять
-        if (!event.ctrlKey && !event.metaKey) {
-            event.preventDefault();
-            inputField.focus(); // ещё раз ставим фокус на поле, на всякий случай, т.к символы воодятся независимо от фокуса
-            inputField.value += currentKeyDown.textContent;
-        }
-    }
 
-    // Если был нажат какой-либо Shift, тогда мы меняем символы в другую раскладку
+    // Если был нажат какой-либо Shift, тогда мы меняем символы в другую раскладку, которая отличается от Caps
     if (checkShift(event)) {
-        fillKeyboardNewSymbol(upperCaseSymbols);
+        fillKeyboardNewSymbol(upperCaseShiftSymbols);
     }
 
     // И при отпускании последней нажатой клавиши мы удаляем с неё класс активности
     document.addEventListener('keyup', (event) => {
         const currentKeyUp = document.querySelector(`.keyboard .keyboard__key[data-keyCode="${event.code}"]`);
         if (currentKeyUp === null) return; // Если такой клавиши на клавиатуре нет, то просто выходим, сами клавиши которых нет на клавиатуре будут работать, например Num Pad
-
         // Если отпущена любая клавиша кроме пробела, то удаляем активность, а пробел остаётся активным до следующего нажатия
         if (!checkCapsLock(event)) {
             currentKeyUp.classList.remove(targetStyleActiveKey);
         }
-        // Если у CapsLock имелся класс активности и при этом была отпущена клавиша Shift, тогда мы удаляем с капса класс активности
-        if (containActiveClassCapsLock && checkShift(event)) {
-            capsLock.classList.remove(targetStyleActiveKey);
-        }
-        // Когда отпускаем Shift, тогда мы возвращаем клавиши клавиатуры в нижний регистр
+        
+        // Когда отпускаем Shift
         if (checkShift(event)) {
-            fillKeyboardNewSymbol(lowerCaseSymbols);
+            // Проверяем был ли в этот момент активирован Caps, если да, тогда ставим раскладку которая соответствует Caps, т.к он ещё активирован
+            if (containActiveClassCapsLock) {
+                fillKeyboardNewSymbol(upperCaseCapsSymbols);
+                // Если Caps не был активирован, значит клавиши с буквами тоже переводим в нижний регистр
+            } else {
+                fillKeyboardNewSymbol(lowerCaseSymbols);
+            }
         }
     });
 
