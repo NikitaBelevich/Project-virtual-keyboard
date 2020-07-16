@@ -40,7 +40,6 @@ const keyboardStyleClasses = {
 
 const keyboard = document.querySelector('.keyboard');
 const keyboardRows = Array.from(keyboard.children);
-// const allKeys = keyboard.querySelectorAll('.keyboard__key');
 const capsLock = keyboard.querySelector('.caps-key');
 const leftShift = keyboard.querySelector('.l-shift-key');
 const rightShift = keyboard.querySelector('.r-shift-key');
@@ -79,7 +78,6 @@ document.addEventListener('keydown', (event) => {
     // Получили текущую нажатую клавишу из DOM 
     const currentKeyDown = document.querySelector(`.keyboard .keyboard__key[data-keyCode="${event.code}"]`);
     if (currentKeyDown === null) return; // Если такой клавиши на клавиатуре нет, то просто выходим, сами клавиши которых нет на клавиатуре будут работать, например Num Pad
-    
 
     const keyCodeAttribute = currentKeyDown.dataset.keycode;
     const currentStyleKeyboard = keyboard.classList[1];
@@ -111,7 +109,6 @@ document.addEventListener('keydown', (event) => {
     // Если у нас не CapsLock, тогда мы добавляем активность на нажатую клавишу
     currentKeyDown.classList.add(targetStyleActiveKey);
 
-
     // Если был нажат какой-либо Shift, тогда мы меняем символы в другую раскладку, которая отличается от Caps
     if (checkShift(keyCodeAttribute)) {
         fillKeyboardNewSymbols(upperCaseShiftSymbols);
@@ -133,7 +130,6 @@ document.addEventListener('keydown', (event) => {
         const keyCodeAttribute = currentKeyUp.dataset.keycode;
         // Если отпущена любая клавиша кроме пробела, то удаляем активность, а пробел остаётся активным до следующего нажатия
         if (!checkCapsLock(keyCodeAttribute)) {
-            // currentKeyDown.classList.remove(targetStyleActiveKey);
             currentKeyUp.classList.remove(targetStyleActiveKey);
         }
         console.log(currentKeyUp);
@@ -147,17 +143,9 @@ document.addEventListener('keydown', (event) => {
                 fillKeyboardNewSymbols(lowerCaseSymbols);
             }
         }
-        // document.removeEventListener('keyup', listenerKeyup);
     }
 
-    // currentKeyDown.classList.remove(targetStyleActiveKey);
 });
-
-// function listenerKeydown(event) {
-//     document.removeEventListener('keydown', listenerKeydown);
-// }
-
-
 
 
 
@@ -167,7 +155,6 @@ document.addEventListener('keydown', (event) => {
 function checkCapsLock(keyCode) {
     return (keyCode == 'CapsLock') ? true : false;
 }
-
 // Проверяет был ли нажат Shift при событии клавиатуры
 function checkShift(keyCode) {
     return (keyCode == 'ShiftLeft' || keyCode == 'ShiftRight') ? true : false;
@@ -213,7 +200,6 @@ function changingTheKeyboardStyle() {
             leftShift.classList.remove(keyboardStyleClasses[currentStyleKeyboard]);
             rightShift.classList.remove(keyboardStyleClasses[currentStyleKeyboard]);
         }
-
         // Удалили текущий класс стиля
         keyboard.classList.remove(currentStyleKeyboard);
         // Добавили новый стиль
@@ -233,18 +219,11 @@ keyboard.addEventListener('mousedown', (event) => {
     if (!targetKey) return; // Если элемент есть, значит выполняем логику ниже
     const keyCodeAttribute = targetKey.dataset.keycode;
     const keySymbol = targetKey.textContent;
-    // inputField.focus();
-    // insertTextAtCursor(inputField, keySymbol);
-    
-    // console.log(event);
-    // targetKey.onmousemove = () => false;
     const currentStyleKeyboard = keyboard.classList[1];
-    
     const targetStyleActiveKey = keyboardStyleClasses[currentStyleKeyboard];
     const containActiveClassCapsLock = capsLock.classList.contains(targetStyleActiveKey);
     // Имеется ли класс активности либо в левом либо в правом Shift
     const containActiveClassShift = leftShift.classList.contains(targetStyleActiveKey) || rightShift.classList.contains(targetStyleActiveKey);
-    // console.log(containActiveClassShift);
 
     if (keyCodeAttribute == 'Tab') event.preventDefault();
 
@@ -293,7 +272,7 @@ keyboard.addEventListener('mousedown', (event) => {
 
     // Если у нас не CapsLock, тогда мы добавляем активность на нажатую клавишу
     targetKey.classList.add(targetStyleActiveKey);
-
+    // Вставляем наш символ клавиши в позицию курсора (с помощью спец.функции)
     insertTextAtCursor(inputField, keySymbol);
 
     // При нажатии мышкой клавиши, начинаем отслеживать движение курсора по всей клавиатуре
@@ -302,15 +281,12 @@ keyboard.addEventListener('mousedown', (event) => {
         /* Специально не отбираем ближайшую клавишу по closest, будет попытка считать дата атрибут элемента у которого нет такого атрибута, такого свойства у объекта dataset не будет, он вернёт нам undefined, и это нам на руку, потому что в этом случае, как только мы вылезем за граниы клавиши, сразу сбросится её активность, а так эта активность сбрасывалась бы только если мы зажали курсор на клавише и протащили бы его до следующей клавиши.
         */
         const moveCodeAttribute = event.target.dataset.keycode;
-
         // Код нажатой клавиши отличается от той, на котором сейчас курсор? Если да - тогда мы ушли с нажатой клавиши, удаляем её активность.
         if (keyCodeAttribute !== moveCodeAttribute) {
             targetKey.classList.remove(targetStyleActiveKey);
             keyboard.onmousemove = null;
             return;
         }
-        console.warn(keyCodeAttribute, moveCodeAttribute);
-        
     };
 
     // TODO MOUSEUP
@@ -321,23 +297,11 @@ keyboard.addEventListener('mousedown', (event) => {
         if (targetKeyUp === null) return; // Если такой клавиши на клавиатуре нет, то просто выходим, сами клавиши которых нет на клавиатуре будут работать, например Num Pad
         const keyCodeAttribute = targetKeyUp.dataset.keycode;
         // Если отпущена любая клавиша кроме пробела, то удаляем активность, а пробел остаётся активным до следующего нажатия
-        // console.log(targetKeyUp);
-        // if (!checkCapsLock(keyCodeAttribute)) {
             targetKeyUp.classList.remove(targetStyleActiveKey);
-        // }
-        // console.log(event.offsetX);
+        
         // При отпускании клавиши, завершаем отслеживание курсора mousemove на клавиатуре
         keyboard.onmousemove = null;
-        // Когда отпускаем Shift
-        // if (checkShift(keyCodeAttribute)) {
-        //     // Проверяем был ли в этот момент активирован Caps, если да, тогда ставим раскладку которая соответствует Caps, т.к он ещё активирован
-        //     if (containActiveClassCapsLock) {
-        //         fillKeyboardNewSymbols(upperCaseCapsSymbols);
-        //         // Если Caps не был активирован, значит клавиши с буквами тоже переводим в нижний регистр
-        //     } else {
-        //         fillKeyboardNewSymbols(lowerCaseSymbols);
-        //     }
-        // }
+        
         keyboard.removeEventListener('mouseup', listenerMouseup);
     }
     // TODO MOUSEUP
