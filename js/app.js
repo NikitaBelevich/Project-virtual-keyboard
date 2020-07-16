@@ -237,7 +237,7 @@ keyboard.addEventListener('mousedown', (event) => {
     // insertTextAtCursor(inputField, keySymbol);
     
     // console.log(event);
-
+    // targetKey.onmousemove = () => false;
     const currentStyleKeyboard = keyboard.classList[1];
     
     const targetStyleActiveKey = keyboardStyleClasses[currentStyleKeyboard];
@@ -296,6 +296,23 @@ keyboard.addEventListener('mousedown', (event) => {
 
     insertTextAtCursor(inputField, keySymbol);
 
+    // При нажатии мышкой клавиши, начинаем отслеживать движение курсора по всей клавиатуре
+    // mousemove здесь для того, чтобы при быстрых кликах на разные клавиши, у нас не было "залипания" стиля активности клавиши, чтобы если случайно клавиша была зажата, а отпущена в другом месте, у нас эта самая зажатая клавиша не осталась в таком состоянии, т.е стиль нажатия на ней не остался случайно.
+    keyboard.onmousemove = (event) => {
+        /* Специально не отбираем ближайшую клавишу по closest, будет попытка считать дата атрибут элемента у которого нет такого атрибута, такого свойства у объекта dataset не будет, он вернёт нам undefined, и это нам на руку, потому что в этом случае, как только мы вылезем за граниы клавиши, сразу сбросится её активность, а так эта активность сбрасывалась бы только если мы зажали курсор на клавише и протащили бы его до следующей клавиши.
+        */
+        const moveCodeAttribute = event.target.dataset.keycode;
+
+        // Код нажатой клавиши отличается от той, на котором сейчас курсор? Если да - тогда мы ушли с нажатой клавиши, удаляем её активность.
+        if (keyCodeAttribute !== moveCodeAttribute) {
+            targetKey.classList.remove(targetStyleActiveKey);
+            keyboard.onmousemove = null;
+            return;
+        }
+        console.warn(keyCodeAttribute, moveCodeAttribute);
+        
+    };
+
     // TODO MOUSEUP
     // И при отпускании последней нажатой клавиши мы удаляем с неё класс активности
     keyboard.addEventListener('mouseup', listenerMouseup);
@@ -308,8 +325,9 @@ keyboard.addEventListener('mousedown', (event) => {
         // if (!checkCapsLock(keyCodeAttribute)) {
             targetKeyUp.classList.remove(targetStyleActiveKey);
         // }
-        console.log(targetKeyUp);
-        
+        // console.log(event.offsetX);
+        // При отпускании клавиши, завершаем отслеживание курсора mousemove на клавиатуре
+        keyboard.onmousemove = null;
         // Когда отпускаем Shift
         // if (checkShift(keyCodeAttribute)) {
         //     // Проверяем был ли в этот момент активирован Caps, если да, тогда ставим раскладку которая соответствует Caps, т.к он ещё активирован
