@@ -209,6 +209,10 @@ function changingTheKeyboardStyle() {
         if (capsLock.classList[2]) {
             capsLock.classList.remove(keyboardStyleClasses[currentStyleKeyboard]);
         }
+        if (leftShift.classList[2] || rightShift.classList[2]) {
+            leftShift.classList.remove(keyboardStyleClasses[currentStyleKeyboard]);
+            rightShift.classList.remove(keyboardStyleClasses[currentStyleKeyboard]);
+        }
 
         // Удалили текущий класс стиля
         keyboard.classList.remove(currentStyleKeyboard);
