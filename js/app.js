@@ -1,7 +1,7 @@
 'use strict';
 
 // Коллекция кодов спец клавиш, которые не должны никак визуально меняться при нажатии CapsLock или Shift
-const specialKeys = new Set(['Tab', 'CapsLock', 'ShiftLeft', 'ControlLeft', 'MetaLeft', 'AltLeft', 'Space', 'AltRight', 'Fn', 'LED', 'ControlRight', 'ShiftRight', 'Enter', 'Backspace']);
+const specialKeys = new Set(['Tab', 'CapsLock', 'ShiftLeft', 'ControlLeft', 'MetaLeft', 'MetaRight', 'AltLeft', 'Space', 'AltRight', 'Fn', 'LED', 'ControlRight', 'ShiftRight', 'Enter', 'Backspace']);
 
 // Символы нижнего регистра
 const lowerCaseSymbols = {
@@ -84,8 +84,14 @@ document.addEventListener('keydown', (event) => {
     const currentStyleKeyboard = keyboard.classList[1];
     const targetStyleActiveKey = keyboardStyleClasses[currentStyleKeyboard];
     const containActiveClassCapsLock = capsLock.classList.contains(targetStyleActiveKey);
+    const selectionStartTextarea = inputField.selectionStart;
+    const selectionEndTextarea = inputField.selectionEnd;
 
-    if (keyCodeAttribute == 'Tab') event.preventDefault();
+    // Если нажат Tab, тогда отменяем действие по умолчанию и выводим табуляцию в место где стоит курсор
+    if (keyCodeAttribute == 'Tab') {
+        event.preventDefault();
+        inputField.setRangeText('\t', selectionStartTextarea, selectionEndTextarea, "end");
+    }
 
     inputField.focus(); // Когда начинаем ввод, делаем активным поле ввода
 
@@ -164,8 +170,8 @@ keyboard.addEventListener('mousedown', (event) => {
     const containActiveClassCapsLock = capsLock.classList.contains(targetStyleActiveKey);
     // Имеется ли класс активности либо в левом либо в правом Shift
     const containActiveClassShift = leftShift.classList.contains(targetStyleActiveKey) || rightShift.classList.contains(targetStyleActiveKey);
-
-    if (keyCodeAttribute == 'Tab') event.preventDefault();
+    const selectionStartTextarea = inputField.selectionStart;
+    const selectionEndTextarea = inputField.selectionEnd;
 
     // TODO Логика CapsLock
     // Если мы поймали CapsLock, то мы через toggle даём клавише активность
@@ -217,8 +223,43 @@ keyboard.addEventListener('mousedown', (event) => {
 
     // Если у нас не CapsLock, тогда мы добавляем активность на нажатую клавишу
     targetKey.classList.add(targetStyleActiveKey);
+
     // Вставляем наш символ клавиши в позицию курсора (с помощью спец.функции)
-    insertTextAtCursor(inputField, keySymbol);
+    if (!specialKeys.has(keyCodeAttribute)) { // Если клавиша не является специальной, выводим в поле textContent её содержимого
+        inputField.setRangeText(keySymbol, selectionStartTextarea, selectionEndTextarea, "end");
+    } else { // иначе если это всё-таки спец.клавиша
+        // Делаем особое поведение для некоторых клавиш
+        actionSpecialKey();
+        function actionSpecialKey() {
+            if (keyCodeAttribute == 'Enter') {
+                inputField.setRangeText('\n', selectionStartTextarea, selectionEndTextarea, "end");
+            }
+            if (keyCodeAttribute == 'Tab') {
+                inputField.setRangeText('\t', selectionStartTextarea, selectionEndTextarea, "end");
+            }
+            if (keyCodeAttribute == 'Space') {
+                inputField.setRangeText(' ', selectionStartTextarea, selectionEndTextarea, "end");
+            }
+            if (keyCodeAttribute == 'Backspace') {
+                let textAreaValue = inputField.value;
+                let positionCursor = inputField.selectionStart;
+                if (positionCursor > 0) {
+                    // Получили позицию строки от начала до курсора минус 1(так как удаляем 1 символ при нажатии)
+                    let firstPartString = textAreaValue.slice(0, positionCursor - 1);
+                    // Вторая часть от позиции курсора до конца
+                    let secondPartString = textAreaValue.slice(positionCursor);
+
+                    // Вывели склеенную строку за вычетом 1 символа перед курсором
+                    inputField.value = firstPartString + secondPartString;
+                    // Установили курсор в позицию где произошло удаление
+                    inputField.setSelectionRange(positionCursor - 1, positionCursor - 1);
+                }
+            }
+
+        }
+        
+    }
+    
 
     // TODO Исправление небольшого казуса при быстрых кликах
     // При нажатии мышкой клавиши, начинаем отслеживать движение курсора по всей клавиатуре
@@ -242,7 +283,6 @@ keyboard.addEventListener('mousedown', (event) => {
     function listenerMouseup(event) {
         const targetKeyUp = event.target.closest('.keyboard__key');
         if (targetKeyUp === null) return; // Если такой клавиши на клавиатуре нет, то просто выходим, сами клавиши которых нет на клавиатуре будут работать, например Num Pad
-        const keyCodeAttribute = targetKeyUp.dataset.keycode;
         // Если отпущена любая клавиша кроме пробела, то удаляем активность, а пробел остаётся активным до следующего нажатия
             targetKeyUp.classList.remove(targetStyleActiveKey);
         
@@ -316,21 +356,3 @@ function changingTheKeyboardStyle() {
     });
 }
 // TODO Изменение стиля клавиатуры -------------------------------------------
-
-// TODO Чужая функция для вставки текста в позицию курсора -------------------------------
-function insertTextAtCursor(el, text, offset) {
-    let val = el.value, endIndex, range, doc = el.ownerDocument;
-    if (typeof el.selectionStart == "number"
-            && typeof el.selectionEnd == "number") {
-        endIndex = el.selectionEnd;
-        el.value = val.slice(0, endIndex) + text + val.slice(endIndex);
-        el.selectionStart = el.selectionEnd = endIndex + text.length+(offset?offset:0);
-    } else if (doc.selection != "undefined" && doc.selection.createRange) {
-        el.focus();
-        range = doc.selection.createRange();
-        range.collapse(false);
-        range.text = text;
-        range.select();
-    }
-}
-// TODO Чужая функция для вставки текста в позицию курсора -------------------------------
