@@ -342,3 +342,33 @@ body {
 .attr-aria-label:hover::before {
   opacity: 1;
 }
+
+.developed-by {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  -webkit-transform: translateX(-50%) rotateX(180deg);
+          transform: translateX(-50%) rotateX(180deg);
+  font-family: 'Literata', serif;
+  font-size: 1.5rem;
+  text-shadow: 0 0 1px #000;
+  opacity: 0;
+  -webkit-animation: rotatetext forwards 2s ease;
+          animation: rotatetext forwards 2s ease;
+}
+
+@-webkit-keyframes rotatetext {
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(-50%) rotateX(0deg);
+            transform: translateX(-50%) rotateX(0deg);
+  }
+}
+
+@keyframes rotatetext {
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(-50%) rotateX(0deg);
+            transform: translateX(-50%) rotateX(0deg);
+  }
+}

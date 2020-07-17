@@ -261,8 +261,12 @@ keyboard.addEventListener('mousedown', (event) => {
                     setTimeout(() => {
                         targetKey.classList.remove('attr-aria-label');
                     }, 500);
-                    
                 });
+            }
+            if (keyCodeAttribute == 'Fn') {
+                if (document.querySelector('.developed-by')) return; // Если уже ранее блок копирайта был добавлен, то выходим
+                // иначе добавляем наш элемент со всеми причудами
+                document.body.insertAdjacentHTML('beforeend', '<div class="developed-by"><small>Developed By Nikita Belevich</small></div>');
             }
 
         }
