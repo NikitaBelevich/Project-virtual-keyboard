@@ -255,6 +255,15 @@ keyboard.addEventListener('mousedown', (event) => {
                     inputField.setSelectionRange(positionCursor - 1, positionCursor - 1);
                 }
             }
+            if (keyCodeAttribute == 'MetaLeft') {
+                targetKey.classList.add('attr-aria-label');
+                targetKey.addEventListener('mouseout', (event) => {
+                    setTimeout(() => {
+                        targetKey.classList.remove('attr-aria-label');
+                    }, 500);
+                    
+                });
+            }
 
         }
         
