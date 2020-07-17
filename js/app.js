@@ -268,6 +268,12 @@ keyboard.addEventListener('mousedown', (event) => {
                 // иначе добавляем наш элемент со всеми причудами
                 document.body.insertAdjacentHTML('beforeend', '<div class="developed-by"><small>Developed By Nikita Belevich</small></div>');
             }
+            if (keyCodeAttribute == 'LED') {
+                const allKeys = keyboard.querySelectorAll('.keyboard__key');
+                allKeys.forEach((key) => {
+                    key.classList.toggle('led-illumination');
+                });
+            }
 
         }
         
