@@ -41,11 +41,11 @@ $fontSizeSpecialKeys: 0.8rem;
 }
 
 .keyboard {
-    // min-width: 800px;
     margin-top: 4vh;
     padding: 16px;
     border: 2px solid black;
     border-radius: 7px;
+    box-shadow: 7px -7px 20px 0px #00000066;
 }
 .keyboard__keys-line {
     display: flex;

@@ -52,6 +52,8 @@ body {
   padding: 16px;
   border: 2px solid black;
   border-radius: 7px;
+  -webkit-box-shadow: 7px -7px 20px 0px #00000066;
+          box-shadow: 7px -7px 20px 0px #00000066;
 }
 
 .keyboard__keys-line {
