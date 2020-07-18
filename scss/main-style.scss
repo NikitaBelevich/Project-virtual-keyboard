@@ -210,6 +210,16 @@ $fontSizeSpecialKeys: 0.8rem;
         box-shadow: 0px 0px 2px #252525;
     }
 }
+
+.style-steel {
+    background-image: url('../img/keyboard-backgroud-steel.webp');
+    background-position: 0 73%;
+    background-size: cover;
+    .keyboard__key {
+        background: linear-gradient(45deg, #dfdfdfb5, #8383839c);
+        box-shadow: inset 4px -5px 6px -3px #fff;
+    }
+}
 // блок с кнопками выбора стиля клавиатуры
 .keyboard-style-button {
     display: flex;
@@ -236,8 +246,13 @@ $fontSizeSpecialKeys: 0.8rem;
         &:nth-child(3) {
             background-color: #303030;
         }
-        &:last-child {
+        &:nth-child(4) {
             background-color: #f7f7f7;
+        }
+        &:last-child {
+            background-image: url('../img/keyboard-backgroud-steel.webp');
+            background-position:center;
+            background-size: cover;
         }
     }
     
@@ -254,6 +269,9 @@ $fontSizeSpecialKeys: 0.8rem;
 }
 .key-active-turquoise {
     background-color: #55f5eb !important;
+}
+.key-active-steel {
+    background-color: lime !important;
 }
 
 // Стили клавиатуры и активных клавиш -----------------------------------------

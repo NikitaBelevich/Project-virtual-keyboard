@@ -247,6 +247,18 @@ body {
           box-shadow: 0px 0px 2px #252525;
 }
 
+.style-steel {
+  background-image: url("../img/keyboard-backgroud-steel.webp");
+  background-position: 0 73%;
+  background-size: cover;
+}
+
+.style-steel .keyboard__key {
+  background: linear-gradient(45deg, #dfdfdfb5, #8383839c);
+  -webkit-box-shadow: inset 4px -5px 6px -3px #fff;
+          box-shadow: inset 4px -5px 6px -3px #fff;
+}
+
 .keyboard-style-button {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -282,8 +294,14 @@ body {
   background-color: #303030;
 }
 
-.keyboard-style-button .check-block:last-child {
+.keyboard-style-button .check-block:nth-child(4) {
   background-color: #f7f7f7;
+}
+
+.keyboard-style-button .check-block:last-child {
+  background-image: url("../img/keyboard-backgroud-steel.webp");
+  background-position: center;
+  background-size: cover;
 }
 
 .key-active-light {
@@ -300,6 +318,10 @@ body {
 
 .key-active-turquoise {
   background-color: #55f5eb !important;
+}
+
+.key-active-steel {
+  background-color: lime !important;
 }
 
 .attr-aria-label {

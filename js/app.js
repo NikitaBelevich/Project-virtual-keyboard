@@ -36,6 +36,7 @@ const keyboardStyleClasses = {
     'style-dark': 'key-active-dark',
     'style-pink': 'key-active-pink',
     'style-turquoise': 'key-active-turquoise',
+    'style-steel': 'key-active-steel',
 };
 
 const keyboard = document.querySelector('.keyboard');
